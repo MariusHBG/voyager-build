@@ -22,8 +22,7 @@
 set -x
 
 name=${1%.zip}
-keymaps_dir="C:\Users\Marius\qmk_firmware\keyboards\voyager\keymaps"
-# firmware_path="C:\Users\Marius\qmk_firmware\.build\\voyager_$name.bin"
+keymaps_dir="C:\Users\$env:username\source\repos\qmk_firmware\keyboards\voyager\keymaps"
 header_template="00_template\config_template.h"
 keymap_template="00_template\keymap_template.c"
 
