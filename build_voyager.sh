@@ -28,7 +28,7 @@ src_dir="$tempdir/$name"
 echo "Temp dir is $tempdir"
 echo "Src dir is $src_dir"
 echo "Detected path $name"
-keymaps_dir="C:\Users\\$USER\source\repos\qmk_firmware\keyboards\voyager\keymaps"
+keymaps_dir="C:\Users\\$USER\source\repos\qmk_firmware\keyboards\zsa\voyager\keymaps"
 header_template="00_template\config_template.h"
 keymap_template="00_template\keymap_template.c"
 
