@@ -1,0 +1,1 @@
+#define QUICK_TAP_TERM_PER_KEY
