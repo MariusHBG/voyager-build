@@ -1,2 +1,3 @@
-01_archive/
+01_input/**
+02_archive/**
 !/**/.gitkeep
