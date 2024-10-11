@@ -21,31 +21,37 @@
 # set -e
 set -x
 
-name=${1%.zip}
-keymaps_dir="C:\Users\$env:username\source\repos\qmk_firmware\keyboards\voyager\keymaps"
+tempdir="01_input"
+input_path=${1%.zip}
+name=$(basename ${input_path})
+src_dir="$tempdir/$name"
+echo "Temp dir is $tempdir"
+echo "Src dir is $src_dir"
+echo "Detected path $name"
+keymaps_dir="C:\Users\\$USER\source\repos\qmk_firmware\keyboards\voyager\keymaps"
 header_template="00_template\config_template.h"
 keymap_template="00_template\keymap_template.c"
 
 echo "Processing layout archive \"$1\"."
-echo "Using header template $header_template."
-echo "Using keymap template $keymap_template."
 
 echo "Extracting archive..."
-unzip -j -o $1 -d $name
+unzip -j -o $1 -d $src_dir/
 
 echo "Modifying source..."
-header_path="$name/config.h"
-keymap_path="$name/keymap.c"
+echo "Using header template $header_template."
+echo "Using keymap template $keymap_template."
+header_path="$src_dir/config.h"
+keymap_path="$src_dir/keymap.c"
 cat $header_template >> $header_path
 cat $keymap_template >> $keymap_path
 
 dest="${keymaps_dir}\\$name"
 echo "Copying output to destination $dest"
 mkdir -p $dest
-cp -r $name/*.c $name/*.h $name/rules.mk -t $dest
+cp -r $src_dir/*.c $src_dir/*.h $src_dir/rules.mk -t $dest
 
 echo "Running qmk compilation..."
 qmk flash -kb voyager -km $name
 
-# cp $firmware_path ./$name.bin
+## cp $firmware_path ./$name.bin
 
