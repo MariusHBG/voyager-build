@@ -21,7 +21,7 @@
 # set -e
 set -x
 
-tempdir="01_input"
+tempdir="input"
 input_path=${1%.zip}
 name=$(basename ${input_path})
 src_dir="$tempdir/$name"
@@ -29,8 +29,8 @@ echo "Temp dir is $tempdir"
 echo "Src dir is $src_dir"
 echo "Detected path $name"
 keymaps_dir="C:\Users\\$USER\source\repos\qmk_firmware\keyboards\zsa\voyager\keymaps"
-header_template="00_template\config_template.h"
-keymap_template="00_template\keymap_template.c"
+header_template="template\config_template.h"
+keymap_template="template\keymap_template.c"
 
 echo "Processing layout archive \"$1\"."
 
