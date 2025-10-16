@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # This is a utility script to include custom functionality in QMK firmware for ZSA voyager.
 # 
 # When using home row mods, it is preferable if the hold action was triggered when tapping a home row key, and quickly after holding it.
@@ -21,6 +23,39 @@
 # set -e
 set -x
 
+# Detect OS
+case "$OSTYPE" in
+  linux*)
+    if grep -qi microsoft /proc/version 2>/dev/null; then
+      OS_NAME="Windows (WSL)"
+    else
+      OS_NAME="Linux"
+    fi
+    ;;
+  darwin*)
+    OS_NAME="macOS"
+    ;;
+  cygwin* | msys* | win32*)
+    OS_NAME="Windows"
+    ;;
+  *)
+    OS_NAME="Unknown"
+    ;;
+esac
+
+# Set path based on OS
+if [[ "$OS_NAME" == "Windows" || "$OS_NAME" == "Windows (WSL)" ]]; then
+  keymaps_dir="C:\\Users\\${USER}\\source\\repos\\qmk_firmware\\keyboards\\zsa\\voyager\\keymaps"
+elif [[ "$OS_NAME" == "macOS" ]]; then
+  keymaps_dir="/Users/${USER}/source/repos/qmk_firmware/keyboards/zsa/voyager/keymaps"
+elif [[ "$OS_NAME" == "Linux" ]]; then
+  keymaps_dir="/home/${USER}/source/repos/qmk_firmware/keyboards/zsa/voyager/keymaps"
+else
+  keymaps_dir="./keymaps"
+fi
+
+echo "Detected OS: $OS_NAME"
+echo "Keymaps directory: $keymaps_dir"
 tempdir="input"
 input_path=${1%.zip}
 name=$(basename ${input_path})
@@ -28,7 +63,6 @@ src_dir="$tempdir/$name"
 echo "Temp dir is $tempdir"
 echo "Src dir is $src_dir"
 echo "Detected path $name"
-keymaps_dir="C:\Users\\$USER\source\repos\qmk_firmware\keyboards\zsa\voyager\keymaps"
 header_template="template\config_template.h"
 keymap_template="template\keymap_template.c"
 
@@ -45,7 +79,7 @@ keymap_path="$src_dir/keymap.c"
 cat $header_template >> $header_path
 cat $keymap_template >> $keymap_path
 
-dest="${keymaps_dir}\\$name"
+dest="${keymaps_dir}/$name"
 echo "Copying output to destination $dest"
 mkdir -p $dest
 cp -r $src_dir/*.c $src_dir/*.h $src_dir/rules.mk -t $dest
