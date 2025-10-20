@@ -63,8 +63,8 @@ src_dir="$tempdir/$name"
 echo "Temp dir is $tempdir"
 echo "Src dir is $src_dir"
 echo "Detected path $name"
-header_template="template\config_template.h"
-keymap_template="template\keymap_template.c"
+header_template="template/config_template.h"
+keymap_template="template/keymap_template.c"
 
 echo "Processing layout archive \"$1\"."
 
@@ -82,7 +82,7 @@ cat $keymap_template >> $keymap_path
 dest="${keymaps_dir}/$name"
 echo "Copying output to destination $dest"
 mkdir -p $dest
-cp -r $src_dir/*.c $src_dir/*.h $src_dir/rules.mk -t $dest
+cp -rv $src_dir/*.c $src_dir/*.h $src_dir/rules.mk $dest
 
 echo "Running qmk compilation..."
 qmk flash -kb voyager -km $name
